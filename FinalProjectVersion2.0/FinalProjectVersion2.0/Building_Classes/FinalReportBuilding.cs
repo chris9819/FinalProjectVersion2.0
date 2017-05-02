@@ -9,7 +9,7 @@ namespace FinalProjectVersion2._0.Building_Classes
     /// <summary>
     /// This class represents a single building in the final excel report created by the program.
     /// </summary>
-    class FinalReportBuilding: Building
+    public class FinalReportBuilding: Building
     {
         /// <summary>
         /// Represents the value in the "Old Rent Amount" column in the final report.

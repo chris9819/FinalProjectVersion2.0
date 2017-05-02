@@ -9,7 +9,7 @@ namespace FinalProjectVersion2._0.Building_Classes
     /// <summary>
     /// This class represents a single building in the terminated leases excel report from Propertyware.
     /// </summary>
-    class TerminatedLeaseReportBuilding : Building
+    public class TerminatedLeaseReportBuilding : Building
     {
         /// <summary>
         /// Represents the value in the "Portfolio Abbreviation" column in the terminated leases excel report.

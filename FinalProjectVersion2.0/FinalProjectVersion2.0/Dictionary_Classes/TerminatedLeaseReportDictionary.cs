@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 using FinalProjectVersion2._0.Building_Classes;
 using OfficeOpenXml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace FinalProjectVersion2._0.Dictionary_Classes
 {
     /// <summary>
     /// This class represents a dictionary of <see cref="TerminatedLeaseReportBuilding"/> objects.
     /// </summary>
-    public class TerminatedLeaseReportDictionary : Dictionary<int, TerminatedLeaseReportDictionary>
+    public class TerminatedLeaseReportDictionary
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TerminatedLeaseReportDictionary"/> class,
-        /// from a excel file location and row where the actual data starts.
+        /// This method returns a dictionary object containing all excel data less duplicates in the "Terminated Leases"
+        /// report.
         /// </summary>
         /// <param name="fileLocation"></param>
         /// <param name="rowStart"></param>
-        public TerminatedLeaseReportDictionary (FileInfo fileLocation, int rowStart)
+        public Dictionary<int,TerminatedLeaseReportBuilding> InitializeDictionary(FileInfo fileLocation, int rowStart)
         {
             // Create a dictionary object to be returned.
             Dictionary<int, TerminatedLeaseReportBuilding> excelDictionary = new Dictionary<int, TerminatedLeaseReportBuilding>();
@@ -29,7 +30,7 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
             {
                 // Create a new worksheet.
                 var worksheet = pck.Workbook.Worksheets[1];
-                // Set the rowCount.
+                // Set the row to start at.
                 int rowCount = rowStart;
                 do
                 {
@@ -37,7 +38,12 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
                     // Select the current building row in the excel document in parallel and put it into a string array.
                     var queryParallel = (from cell in worksheet.Cells[string.Format("A{0}:G{0}", rowCount)] select cell).AsParallel();
                     string[] buildingRow = new string[7];
-                    buildingRow = queryParallel.Select(c => c.Value.ToString()).ToArray();
+                    int i = 0;
+                    foreach (var cell in queryParallel)
+                    {
+                        buildingRow[i] = cell.Value.ToString();
+                        i++;
+                    }
                     // Create a new building object to store the data within the string array.
                     TerminatedLeaseReportBuilding building = new TerminatedLeaseReportBuilding();
                     building.BuildingAbbreviation = buildingRow[0];
@@ -46,17 +52,34 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
                     building.Date = buildingRow[3];
                     building.AccountNumber = buildingRow[5];
                     building.AccountDescription = buildingRow[6];
-                    // Special case for the "Charge Amount" columnn, as it may contain a null value, which throws an error when converting to a double.
-                    if (buildingRow[4] == null)
-                    { building.ChargeAmount = 0; }
-                    else
-                        building.ChargeAmount = Convert.ToDouble(buildingRow[4]);
+                    // Special case for the charge amount column, as values can be stored as currency, numbers, or even text (with dollar sign symbols)
+                    // The following code always throws a NullReference Exception, and I am not sure why (possible due to the last iteration of the do-while loop?).
+                    try
+                    {
+                        if (buildingRow[4][0] == '$')
+                        {
+                            // Remove dollar sign before converting to double using a regex expression
+                            string pattern = @"(\p{Sc}\s?)?(\d+\.?((?<=\.)\d+)?)(?(1)|\s?\p{Sc})?";
+                            string replacement = "$2";
+                            Regex rgx = new Regex(pattern);
+                            string value = rgx.Replace(buildingRow[4], replacement);
+                            building.ChargeAmount = Convert.ToDouble(value);
+                        }
+                        else
+                        {
+                            building.ChargeAmount = Convert.ToDouble(buildingRow[4]);
+                        }
+                    }
+                    catch (System.NullReferenceException)
+                    {
+                    }
                     // Put the current building into the dictionary
                     excelDictionary[rowCount] = building;
                 } while (excelDictionary.Last().Value.BuildingAbbreviation != null);
                 // Remove the last row of the excel dictionary that is empty.
                 excelDictionary.Remove(rowCount);
             }
+            return new TerminatedLeaseReportDictionary().TerminatedLeaseReportRemoveDuplicates(excelDictionary);
         }
 
         /// <summary>

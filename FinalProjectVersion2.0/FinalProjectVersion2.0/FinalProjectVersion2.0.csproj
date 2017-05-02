@@ -54,8 +54,8 @@
     <Compile Include="Building_Classes\FinalReportBuilding.cs" />
     <Compile Include="Building_Classes\NewLeaseReportBuilding.cs" />
     <Compile Include="Building_Classes\TerminatedLeaseReportBuilding.cs" />
+    <Compile Include="Dictionary_Classes\NewLeaseReportDictionary.cs" />
     <Compile Include="Dictionary_Classes\TerminatedLeaseReportDictionary.cs" />
-    <Compile Include="Excel_Wizardry\CoreExcelCode.cs" />
     <Compile Include="Main\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

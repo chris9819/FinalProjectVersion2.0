@@ -9,7 +9,7 @@ namespace FinalProjectVersion2._0.Building_Classes
     /// <summary>
     /// This class represents a single building in the new leases excel report from Propertyware.
     /// </summary>
-    class NewLeaseReportBuilding: Building
+    public class NewLeaseReportBuilding: Building
     {
         /// <summary>
         /// Represents the value in the "Portfolio Name" column in the new leases excel report.
