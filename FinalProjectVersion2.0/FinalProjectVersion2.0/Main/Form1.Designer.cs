@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.terminatedLeasesPanel = new System.Windows.Forms.Panel();
-            this.newLeasesPanel = new System.Windows.Forms.Panel();
             this.terminatedLeasesLabel = new System.Windows.Forms.Label();
+            this.newLeasesPanel = new System.Windows.Forms.Panel();
             this.newLeasesLabel = new System.Windows.Forms.Label();
             this.goButton = new System.Windows.Forms.Button();
             this.instructionsButton = new System.Windows.Forms.Button();
@@ -42,21 +42,13 @@
             // 
             // terminatedLeasesPanel
             // 
+            this.terminatedLeasesPanel.AllowDrop = true;
             this.terminatedLeasesPanel.BackColor = System.Drawing.Color.LightGray;
             this.terminatedLeasesPanel.Controls.Add(this.terminatedLeasesLabel);
             this.terminatedLeasesPanel.Location = new System.Drawing.Point(12, 153);
             this.terminatedLeasesPanel.Name = "terminatedLeasesPanel";
             this.terminatedLeasesPanel.Size = new System.Drawing.Size(386, 254);
-            this.terminatedLeasesPanel.TabIndex = 0;
-            // 
-            // newLeasesPanel
-            // 
-            this.newLeasesPanel.BackColor = System.Drawing.Color.LightGray;
-            this.newLeasesPanel.Controls.Add(this.newLeasesLabel);
-            this.newLeasesPanel.Location = new System.Drawing.Point(422, 153);
-            this.newLeasesPanel.Name = "newLeasesPanel";
-            this.newLeasesPanel.Size = new System.Drawing.Size(386, 254);
-            this.newLeasesPanel.TabIndex = 1;
+            this.terminatedLeasesPanel.TabIndex = 1;
             // 
             // terminatedLeasesLabel
             // 
@@ -68,6 +60,16 @@
             this.terminatedLeasesLabel.TabIndex = 0;
             this.terminatedLeasesLabel.Text = "Terminated Leases Report";
             // 
+            // newLeasesPanel
+            // 
+            this.newLeasesPanel.AllowDrop = true;
+            this.newLeasesPanel.BackColor = System.Drawing.Color.LightGray;
+            this.newLeasesPanel.Controls.Add(this.newLeasesLabel);
+            this.newLeasesPanel.Location = new System.Drawing.Point(422, 153);
+            this.newLeasesPanel.Name = "newLeasesPanel";
+            this.newLeasesPanel.Size = new System.Drawing.Size(386, 254);
+            this.newLeasesPanel.TabIndex = 2;
+            // 
             // newLeasesLabel
             // 
             this.newLeasesLabel.AutoSize = true;
@@ -75,17 +77,20 @@
             this.newLeasesLabel.Location = new System.Drawing.Point(99, 109);
             this.newLeasesLabel.Name = "newLeasesLabel";
             this.newLeasesLabel.Size = new System.Drawing.Size(199, 25);
-            this.newLeasesLabel.TabIndex = 2;
+            this.newLeasesLabel.TabIndex = 0;
             this.newLeasesLabel.Text = "New Leases Report";
             // 
             // goButton
             // 
+            this.goButton.Enabled = false;
             this.goButton.Location = new System.Drawing.Point(707, 423);
             this.goButton.Name = "goButton";
             this.goButton.Size = new System.Drawing.Size(101, 38);
-            this.goButton.TabIndex = 2;
+            this.goButton.TabIndex = 0;
             this.goButton.Text = "Go!";
             this.goButton.UseVisualStyleBackColor = true;
+            this.goButton.Visible = false;
+            this.goButton.Click += new System.EventHandler(this.goButton_Click);
             // 
             // instructionsButton
             // 
@@ -95,6 +100,7 @@
             this.instructionsButton.TabIndex = 3;
             this.instructionsButton.Text = "Instructions";
             this.instructionsButton.UseVisualStyleBackColor = true;
+            this.instructionsButton.Click += new System.EventHandler(this.instructionsButton_Click);
             // 
             // pictureBox1
             // 

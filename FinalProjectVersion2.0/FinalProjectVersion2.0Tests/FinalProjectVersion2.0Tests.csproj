@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Dictionary_Classes\FinalReportDictionaryTests.cs" />
     <Compile Include="Dictionary_Classes\NewLeaseReportDictionaryTests.cs" />
     <Compile Include="Dictionary_Classes\TerminatedLeaseReportDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
