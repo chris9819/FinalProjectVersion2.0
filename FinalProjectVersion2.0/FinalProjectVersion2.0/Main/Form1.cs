@@ -1,21 +1,23 @@
 ﻿using FinalProjectVersion2._0.Building_Classes;
 using FinalProjectVersion2._0.Dictionary_Classes;
+using FinalProjectVersion2._0.Main;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FinalProjectVersion2._0
 {
+    /// <summary>
+    /// This class represents the winform.
+    /// </summary>
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// This method initializes the components of the form and sets the starting properties.
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -29,11 +31,11 @@ namespace FinalProjectVersion2._0
             StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// This method activates when the user presses the go button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void goButton_Click(object sender, EventArgs e)
         {
             terminatedLeasesPanel.BackColor = Color.LightGray;
@@ -46,42 +48,8 @@ namespace FinalProjectVersion2._0
             var newLeaseExcelDictionary = new NewLeaseReportDictionary().InitializeDictionary(new FileInfo(newLeasesLabel.Text), 8);
             // Combine both of the reports.
             var finalReportDictionary = new FinalReportDictionary().CombineDictionaries(terminatedLeaseExcelDictionary, newLeaseExcelDictionary);
-            createFinalReportFile(finalReportDictionary);
-        }
-        
-        /// <summary>
-        /// This method accepts a FileInfo object and dictionary then creates an excel report based on the information 
-        /// </summary>
-        public void createFinalReportFile(Dictionary<int, FinalReportBuilding> combinedExcelReport)
-        {
-            // Set the file name and get the output directory.
-            var fileName = "FinalReport" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".xls";
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            // Create the file using the FileInfo object.
-            var file = new FileInfo(path + "\\" + fileName).Create();
-            using (var package = new ExcelPackage(file))
-            {
-                // Add headers.
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                worksheet.Cells[1, 1].Value = "Building Abbreviation";
-                worksheet.Cells[1, 2].Value = "Old Rent Amount";
-                worksheet.Cells[1, 3].Value = "New Rent Amount";
-                worksheet.Cells[1, 4].Value = "% Change in Rent";
-                int rowCount = 1;
-                // Add data from dictionary
-                foreach (var entry in combinedExcelReport)
-                {
-                    rowCount++;
-                    worksheet.Cells[rowCount, 1].Value = entry.Value.BuildingAbbreviation;
-                    worksheet.Cells[rowCount, 2].Value = entry.Value.OldRentAmount;
-                    worksheet.Cells[rowCount, 3].Value = entry.Value.NewRentAmount;
-                    worksheet.Cells[rowCount, 4].Value = entry.Value.DifferenceAmount;
-                }
-                worksheet.Cells[rowCount + 2, 4].Formula = "= AVERAGE(D2, D" + rowCount + ")";
-                worksheet.Cells[rowCount + 2, 3].Value = "Avg change in rent";
-                worksheet.Cells.AutoFitColumns();
-                package.Save();
-            }
+            new CreateFile().createFinalReportFile(finalReportDictionary);
+            MessageBox.Show("You will find the report on your desktop");
         }
 
         /// <summary>

@@ -49,6 +49,8 @@
             this.terminatedLeasesPanel.Name = "terminatedLeasesPanel";
             this.terminatedLeasesPanel.Size = new System.Drawing.Size(386, 254);
             this.terminatedLeasesPanel.TabIndex = 1;
+            this.terminatedLeasesPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.terminatedLeasesPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // terminatedLeasesLabel
             // 
@@ -69,6 +71,8 @@
             this.newLeasesPanel.Name = "newLeasesPanel";
             this.newLeasesPanel.Size = new System.Drawing.Size(386, 254);
             this.newLeasesPanel.TabIndex = 2;
+            this.newLeasesPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.newLeasesPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // newLeasesLabel
             // 
@@ -123,13 +127,13 @@
             this.Controls.Add(this.terminatedLeasesPanel);
             this.Name = "Form1";
             this.Text = "Change In Rent Calculator";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.terminatedLeasesPanel.ResumeLayout(false);
             this.terminatedLeasesPanel.PerformLayout();
             this.newLeasesPanel.ResumeLayout(false);
             this.newLeasesPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
