@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Dictionary_Classes\NewLeaseReportDictionaryTests.cs" />
     <Compile Include="Dictionary_Classes\TerminatedLeaseReportDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,6 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleTerminatedLeasesReport.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SampleNewLeasesReport.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

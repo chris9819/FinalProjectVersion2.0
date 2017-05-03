@@ -28,7 +28,7 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
             // Create a new excel package from a file location to be used.
             using (var pck = new ExcelPackage(fileLocation))
             {
-                // Create a new worksheet.
+                // Select the first worksheet in an excel file.
                 var worksheet = pck.Workbook.Worksheets[1];
                 // Set the row to start at.
                 int rowCount = rowStart;
@@ -39,10 +39,17 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
                     var queryParallel = (from cell in worksheet.Cells[string.Format("A{0}:G{0}", rowCount)] select cell).AsParallel();
                     string[] buildingRow = new string[7];
                     int i = 0;
-                    foreach (var cell in queryParallel)
+                    // Not sure why a null reference exception is thrown here.
+                    try
                     {
-                        buildingRow[i] = cell.Value.ToString();
-                        i++;
+                        foreach (var cell in queryParallel)
+                        {
+                            buildingRow[i] = cell.Value.ToString();
+                            i++;
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
                     }
                     // Create a new building object to store the data within the string array.
                     TerminatedLeaseReportBuilding building = new TerminatedLeaseReportBuilding();
@@ -53,7 +60,7 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
                     building.AccountNumber = buildingRow[5];
                     building.AccountDescription = buildingRow[6];
                     // Special case for the charge amount column, as values can be stored as currency, numbers, or even text (with dollar sign symbols)
-                    // The following code always throws a NullReference Exception, and I am not sure why (possible due to the last iteration of the do-while loop?).
+                    // The following code always throws a NullReference Exception, and I am not sure why (possibly due to the last iteration of the do-while loop?).
                     try
                     {
                         if (buildingRow[4][0] == '$')
@@ -83,7 +90,7 @@ namespace FinalProjectVersion2._0.Dictionary_Classes
         }
 
         /// <summary>
-        /// Rremoves duplicate pairs from a "Terminated Leases" dictionary object.
+        /// Rremoves duplicate pairs from a "Terminated Leases" dictionary object, keeping the building with the highest charge amount.
         /// </summary>
         /// <param name="dictionary"></param>
         private Dictionary<int, TerminatedLeaseReportBuilding> TerminatedLeaseReportRemoveDuplicates(Dictionary<int, TerminatedLeaseReportBuilding> dictionary)
